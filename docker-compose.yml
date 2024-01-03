@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - dbdata:/data/db
+
+  pingo:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "3241:3241"
+    depends_on:
+      - mongodb
+
+volumes:
+  dbdata:
