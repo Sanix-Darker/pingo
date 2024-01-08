@@ -1,5 +1,14 @@
 .PHONY: all build clean test deps run docker-build install docker-run compose lint
 
+# include ENV vars only if the .env file exist
+-include .env
+
+export PING_PORT
+export VERSION
+export MONGO_DB
+export MONGO_HOST
+export PINGO_COLLECTION
+
 GO := go
 GOFLAGS :=
 BINARY_NAME := pingo

@@ -1,10 +1,13 @@
 package main
 
-// later comes from os env vars
+import (
+	"os"
+)
+
 var (
-	PING_PORT       = 3241
-	VERSION         = "0.1.0"
-	MONGO_DB        = "pingo"
-	MONGO_HOST      = "mongodb://localhost:27017"
-	PING_COLLECTION = "pings"
+	VERSION         = os.Getenv("VERSION")
+	PING_PORT       = os.Getenv("PING_PORT")
+	MONGO_DB        = os.Getenv("MONGO_DB")
+	MONGO_HOST      = os.Getenv("MONGO_HOST")
+	PING_COLLECTION = os.Getenv("PING_COLLECTION")
 )
