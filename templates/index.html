@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{.Title}}</title>
+    <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
+</head>
+<body>
+    <h1>Welcome to the Home Page!</h1>
+    <button
+        hx-get="/api/v1/pings"
+        hx-trigger="click"
+        hx-target="#result"
+    >CLICK ME</button>
+
+    <div id="result"></div>
+</body>
+</html>

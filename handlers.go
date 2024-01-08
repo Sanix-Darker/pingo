@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"html/template"
 	"log"
 	"net/http"
 
@@ -96,4 +97,22 @@ func CreatePing(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(ping)
+}
+
+// IndexHandler
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("templates/index.html"))
+
+	data := struct {
+		Title string
+	}{
+		Title: "Pingo",
+	}
+
+	err := tmpl.Execute(w, data)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 }

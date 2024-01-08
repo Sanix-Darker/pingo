@@ -1,11 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
+
+var API_VERSION = "/api/v1"
 
 // requestLoggerMiddleware middleware to add logger on each route
 func requestLoggerMiddleware(next http.Handler) http.Handler {
@@ -15,12 +18,34 @@ func requestLoggerMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-// responseHeadersMiddleware middleware to add some headers
-func responseHeadersMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		next.ServeHTTP(w, r)
-	})
+func apiV1Routes(router *mux.Router) *mux.Router {
+	// GET /pings
+	// should be authentificated ang get from the current user.
+	router.HandleFunc(
+		fmt.Sprintf("%s/pings", API_VERSION),
+		GetPings,
+	).Methods("GET", "OPTIONS")
+
+	// GET /pings/{id}
+	// No need for authentification
+	router.HandleFunc(
+		fmt.Sprintf("%s/pings/{id}", API_VERSION),
+		GetPingByID,
+	).Methods("GET", "OPTIONS")
+
+	// POST /pings
+	router.HandleFunc(
+		fmt.Sprintf("%s/pings", API_VERSION),
+		CreatePing,
+	).Methods("POST", "OPTIONS")
+
+	return router
+}
+
+// viewsRoutes
+func viewsRoutes(router *mux.Router) *mux.Router {
+	router.HandleFunc("/", IndexHandler).Methods("GET", "OPTIONS")
+	return router
 }
 
 func BuildRouter() *mux.Router {
@@ -28,18 +53,19 @@ func BuildRouter() *mux.Router {
 
 	// middlewares
 	router.Use(requestLoggerMiddleware)
-	router.Use(responseHeadersMiddleware)
 
-	router.HandleFunc("/", GetStatus).Methods("GET", "OPTIONS")
+	router.PathPrefix(
+		"/static/",
+	).Handler(
+		http.StripPrefix(
+			"/static/",
+			http.FileServer(http.Dir("static")),
+		),
+	)
 
-	// GET /pings
-	// should be authentificated ang get from the current user.
-	router.HandleFunc("/pings", GetPings).Methods("GET", "OPTIONS")
-	// GET /pings/{id}
-	// No need for authentification
-	router.HandleFunc("/pings/{id}", GetPingByID).Methods("GET", "OPTIONS")
-	// POST /pings
-	router.HandleFunc("/pings", CreatePing).Methods("POST", "OPTIONS")
+	router = apiV1Routes(
+		viewsRoutes(router),
+	)
 
 	return router
 }
