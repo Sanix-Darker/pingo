@@ -14,7 +14,7 @@ GOFLAGS :=
 BINARY_NAME := pingo
 DOCKER_IMAGE := pingo:latest
 
-all: clean build run
+all: clean compose
 
 build:
 	$(GO) build $(GOFLAGS) -o $(BINARY_NAME)
