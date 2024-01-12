@@ -42,9 +42,12 @@ func apiV1Routes(router *mux.Router) *mux.Router {
 	return router
 }
 
-// viewsRoutes
+// viewsRoutes for templates or statics
 func viewsRoutes(router *mux.Router) *mux.Router {
+
 	router.HandleFunc("/", IndexHandler).Methods("GET", "OPTIONS")
+	router.HandleFunc("/o/{pingPath}", StrikeHandler).Methods("GET", "OPTIONS")
+
 	return router
 }
 
@@ -58,7 +61,7 @@ func BuildRouter() *mux.Router {
 		"/static/",
 	).Handler(
 		http.StripPrefix(
-			"/static/",
+			"../static/",
 			http.FileServer(http.Dir("static")),
 		),
 	)

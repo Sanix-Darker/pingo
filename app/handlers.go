@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -101,7 +102,9 @@ func CreatePing(w http.ResponseWriter, r *http.Request) {
 
 // IndexHandler
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("templates/index.html"))
+	tmpl := template.Must(
+		template.ParseFiles("../templates/index.html"),
+	)
 
 	data := struct {
 		Title string
@@ -114,5 +117,27 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
+	}
+}
+
+// StrikeHandler: the handler for serving an svg for the link generated.
+func StrikeHandler(w http.ResponseWriter, r *http.Request) {
+	// Assuming the URL pattern is http://host/o/{strikey}.svg
+	urlPath := r.URL.Path
+	urlParts := strings.Split(urlPath, "/")
+
+	log.Printf("> urlPath: %v\n", urlPath)
+
+	if len(urlParts) >= 3 {
+		pingKey := urlParts[2]
+		//TODO:
+		// 	- add a new strike from the provided pingkey
+		log.Printf("> pingKey: %v\n", pingKey)
+		pingSvgPath := "./static/" + pingKey
+		log.Printf("> pingSvgPath: %v\n", pingSvgPath)
+		http.ServeFile(w, r, pingSvgPath)
+	} else {
+		// Handle invalid URL path
+		http.NotFound(w, r)
 	}
 }

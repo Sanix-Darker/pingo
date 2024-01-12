@@ -11,7 +11,6 @@ import (
 func main() {
 
 	router := BuildRouter()
-
 	// ListRoutes(router)
 	log.Printf("> Pingo started successfully on %d...\n", PING_PORT)
 	port, _ := strconv.Atoi(PING_PORT)

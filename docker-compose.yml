@@ -21,6 +21,8 @@ services:
     working_dir: /src/app
     volumes:
       - ./app/:/src/app
+      - ./static/:/src/static
+      - ./templates/:/src/templates
 
 volumes:
   pidb:

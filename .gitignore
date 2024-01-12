@@ -1,4 +1,5 @@
 pingo
 app/tmp/main
 app/pingo
+*.svg
 .env

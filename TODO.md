@@ -1,7 +1,7 @@
 ## TODO:
 
 - [x] add live reload
-- [ ] create a strike from a `{key}.svg` link
+- [ ] create a strike from a `{key}.svg` direct link
 - [ ] Make it run IRL
 - [ ] add basic CI/CD
 - [x] add user model (struct) to link a ping to
