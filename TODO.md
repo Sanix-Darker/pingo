@@ -1,10 +1,11 @@
 ## TODO:
 
 - [x] add live reload
+- [ ] create a strike from a `{key}.svg` link
 - [ ] Make it run IRL
 - [ ] add basic CI/CD
-- [ ] add user model (struct) to link a ping to
-- [ ] add a website model (struct) to link a ping and user habits to.
+- [x] add user model (struct) to link a ping to
+- [x] add a website model (struct) to link a ping and user habits to.
 - [ ] add som go tests
 - [ ] deploy it on a real server and test it out.
 - [ ] distinguish unique ping than doublons (at least find a way)
