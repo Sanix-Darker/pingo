@@ -69,3 +69,18 @@ func BuildRouter() *mux.Router {
 
 	return router
 }
+
+// ListRoutes List all routes
+func ListRoutes(router *mux.Router) {
+	if err := router.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
+		pathTemplate, err := route.GetPathTemplate()
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println("> route:", pathTemplate)
+		return nil
+	}); err != nil {
+		fmt.Println(err)
+	}
+
+}

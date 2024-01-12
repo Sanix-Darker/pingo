@@ -1,6 +1,6 @@
 ## TODO:
 
-- [ ] add live reload
+- [x] add live reload
 - [ ] Make it run IRL
 - [ ] add basic CI/CD
 - [ ] add user model (struct) to link a ping to

@@ -10,4 +10,5 @@ var (
 	MONGO_DB        = os.Getenv("MONGO_DB")
 	MONGO_HOST      = os.Getenv("MONGO_HOST")
 	PING_COLLECTION = os.Getenv("PING_COLLECTION")
+	ASSETS_PATH     = "static"
 )

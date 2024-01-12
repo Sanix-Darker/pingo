@@ -17,7 +17,7 @@ DOCKER_IMAGE := pingo:latest
 all: clean compose
 
 build:
-	$(GO) build $(GOFLAGS) -o $(BINARY_NAME)
+	cd ./app && $(GO) build $(GOFLAGS) -o $(BINARY_NAME)
 
 clean:
 	$(GO) clean
@@ -34,8 +34,8 @@ test:
 deps:
 	$(GO) mod download
 
-run: build
-	./$(BINARY_NAME)
+dev: build
+	./app/$(BINARY_NAME)
 
 lint:
 	golangci-lint run

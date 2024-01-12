@@ -7,13 +7,13 @@ import (
 	"path"
 )
 
+// TODO: add more styling to this template
 const TEMPLATE = `
 	<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d">
 	  <text x="%d" y="%d" font-family="Verdana" font-size="20" fill="black">%d</text>
 	</svg>
 `
 
-// add more styling to this function please
 // CreateSVG
 func CreateSVG(key string, number int) error {
 	width, height, textX, textY := 200, 100, 50, 50
@@ -25,8 +25,7 @@ func CreateSVG(key string, number int) error {
 		return err
 	}
 
-	svgPath := path.Join(pwd, ".", fmt.Sprintf("./assets/%s.svg", key))
-
+	svgPath := path.Join(pwd, ".", fmt.Sprintf("./%s/%s.svg", ASSETS_PATH, key))
 	if err := os.WriteFile(
 		svgPath,
 		[]byte(svgContent),

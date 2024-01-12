@@ -1,2 +1,4 @@
 pingo
+app/tmp/main
+app/pingo
 .env
