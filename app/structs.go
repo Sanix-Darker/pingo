@@ -1,6 +1,6 @@
 package main
 
-type commonFields struct {
+type CommonFields struct {
 	//pk id depending on the struct
 	ID        string `json:"id"`
 	CreatedAt string `json:"created_at"`
@@ -8,7 +8,7 @@ type commonFields struct {
 }
 
 type Ping struct {
-	*commonFields
+	CommonFields
 
 	// Key: will be the {key}.svg file
 	// and will be the key generated (human readable)
@@ -27,7 +27,7 @@ type Strike struct {
 }
 
 type User struct {
-	*commonFields
+	CommonFields
 
 	// Username: extracted from the email or just the email.
 	Username string `json:"username"`

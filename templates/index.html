@@ -1,17 +1,34 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>{{.Title}}</title>
-    <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
-</head>
-<body>
-    <h1>Welcome to the Home Page!</h1>
-    <button
-        hx-get="/api/v1/pings"
-        hx-trigger="click"
-        hx-target="#result"
-    >CLICK ME</button>
+    <head>
+        <title>{{.Title}}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <h1>Welcome to the Pingo !</h1>
+        The easiest way to track and follow your pings across the internet.
 
-    <div id="result"></div>
-</body>
+        <hr/>
+        <h3>How does it work</h3>
+        First, you login, using github or google.
+
+        Then you create a pingKey, it's attached with a link an will represent the amount of time
+        that link got striked.
+
+        <hr/>
+        <h3>Why do you need pingo</h3>
+        This was for my personal use case, but i was frustrating to not knowing how often was my PRs/issues as a developer were either checked.
+        And this is one of uses cases, let also say, you send a mail, inside the mail you provide a :
+        <img src="https://host/o/pingKey.svg" />
+        if the email is opened (well with image accepted as preview),
+        you're going to be notified about it, at least, only the amount of strike, your ping received.
+
+        <hr/>
+        <h3>What to expect from Pingo</h3>
+        Litterally nothing special, this is a side-project i did in a late night saturday and i wanted to learn htmx at the same time.
+        It's self Hosted, so you can have your own instance of it.
+
+    </body>
+    <script src="https://unpkg.com/htmx.org@1.9.10/dist/htmx.min.js"></script>
 </html>

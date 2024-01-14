@@ -1,0 +1,9 @@
+<form
+    hx-post="/api/v1/pings"
+    hx-swap="innerHTML"
+    hx-target="#view-ping-list"
+>
+    <label for="key">Key:</label>
+    <input type="text" name="key" required/>
+    <button type="submit">CREATE PING</button>
+</form>

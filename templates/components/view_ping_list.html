@@ -1,0 +1,16 @@
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Key</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range .Pings}}
+            <tr>
+                <td>#{{.CommonFields.ID }}</td>
+                <td>{{ .Key }}</td>
+            </tr>
+        {{end}}
+    </tbody>
+</table>

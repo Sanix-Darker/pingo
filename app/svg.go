@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"path"
@@ -17,7 +16,7 @@ const TEMPLATE = `
 // CreateSVG
 func CreateSVG(key string, number int) error {
 	width, height, textX, textY := 200, 100, 50, 50
-	svgContent := fmt.Sprintf(TEMPLATE, width, height, textX, textY, number)
+	svgContent := Format(TEMPLATE, width, height, textX, textY, number)
 
 	pwd, err := os.Getwd()
 	if err != nil {
@@ -25,7 +24,7 @@ func CreateSVG(key string, number int) error {
 		return err
 	}
 
-	svgPath := path.Join(pwd, ".", fmt.Sprintf("./%s/%s.svg", ASSETS_PATH, key))
+	svgPath := path.Join(pwd, ".", Format("./%s/%s.svg", ASSETS_PATH, key))
 	if err := os.WriteFile(
 		svgPath,
 		[]byte(svgContent),

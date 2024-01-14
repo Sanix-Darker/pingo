@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
@@ -63,21 +64,26 @@ func GetPingByID(w http.ResponseWriter, r *http.Request) {
 // CreatePing handler to create a ping
 func CreatePing(w http.ResponseWriter, r *http.Request) {
 	// Parse request body
-	var ping Ping
-	err := json.NewDecoder(r.Body).Decode(&ping)
+	err := r.ParseForm()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(struct {
 			Error string `json:"error"`
 		}{
-			Error: "Invalid request body",
+			Error: "Failed to parse form data",
 		})
 		return
 	}
 
-	ping.ID = uuid.New().String()
+	var ping Ping
 
-	log.Println("> Create Ping...")
+	// Extract form values
+	ping.ID = uuid.New().String()
+	ping.Key := r.Form.Get("key")
+	ping.CreatedAt = time.Now().Format("%d-%M-%Y %h:%m:%s")
+	ping.UpdatedAt = ping.CreatedAt
+
+	log.Println("> Create Ping...", ping)
 	// Save the ping to MongoDB
 	collection := MongoClient().Database(MONGO_DB).Collection(PING_COLLECTION)
 	_, err = collection.InsertOne(nil, ping)
@@ -91,28 +97,34 @@ func CreatePing(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: add mongo code here
-	var pings []Ping
-	// Append the ping to the in-memory slice
-	pings = append(pings, ping)
-
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(ping)
+	// TODO: add mongo code here to create a new ping
+	// TODO: return the template view_ping_list
 }
 
-// IndexHandler
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
+// CreatePingHandler the form to create a ping
+func ViewPingListHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(
-		template.ParseFiles("../templates/index.html"),
+		template.ParseFiles(
+			TEMPLATES_PATH + "/components/view_ping_list.html",
+		),
 	)
 
-	data := struct {
-		Title string
-	}{
-		Title: "Pingo",
+	pings := []Ping{
+		Ping{
+			CommonFields: CommonFields{
+				ID: "an-id",
+			},
+			Key: "special-key",
+		},
 	}
 
-	err := tmpl.Execute(w, data)
+	tmplData := struct {
+		Pings []Ping
+	}{
+		Pings: pings,
+	}
+
+	err := tmpl.Execute(w, tmplData)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
@@ -120,22 +132,79 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// CreatePingHandler the form to create a ping
+func CreatePingHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(
+		template.ParseFiles(
+			TEMPLATES_PATH + "/components/form_ping_create.html",
+		),
+	)
+
+	err := tmpl.Execute(w, struct{}{})
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+}
+
+// DashboardHandler
+func DashboardHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(
+		template.ParseFiles(TEMPLATES_PATH + "/dashboard.html"),
+	)
+
+	tmplData := struct {
+		Title string
+	}{
+		Title: "Dashboard",
+	}
+
+	err := tmpl.Execute(w, tmplData)
+
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+}
+
+// IndexHandler for the index
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(
+		template.ParseFiles(TEMPLATES_PATH + "/index.html"),
+	)
+
+	tmplData := struct {
+		Title string
+	}{
+		Title: "Pingo",
+	}
+
+	err := tmpl.Execute(w, tmplData)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+}
+
 // StrikeHandler: the handler for serving an svg for the link generated.
 func StrikeHandler(w http.ResponseWriter, r *http.Request) {
-	// Assuming the URL pattern is http://host/o/{strikey}.svg
+	// Assuming the URL pattern is http://host/o/{pingKey}.svg
 	urlPath := r.URL.Path
 	urlParts := strings.Split(urlPath, "/")
-
-	log.Printf("> urlPath: %v\n", urlPath)
 
 	if len(urlParts) >= 3 {
 		pingKey := urlParts[2]
 		//TODO:
 		// 	- add a new strike from the provided pingkey
-		log.Printf("> pingKey: %v\n", pingKey)
-		pingSvgPath := "./static/" + pingKey
-		log.Printf("> pingSvgPath: %v\n", pingSvgPath)
-		http.ServeFile(w, r, pingSvgPath)
+		http.ServeFile(
+			w,
+			r,
+			Format("%s/%s", ASSETS_PATH, pingKey), // the path of the pingKey
+		)
 	} else {
 		// Handle invalid URL path
 		http.NotFound(w, r)

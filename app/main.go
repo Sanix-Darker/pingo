@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 
 	"log"
@@ -11,11 +10,14 @@ import (
 func main() {
 
 	router := BuildRouter()
-	// ListRoutes(router)
+
+	ListRoutes(router)
+
 	log.Printf("> Pingo started successfully on %d...\n", PING_PORT)
+
 	port, _ := strconv.Atoi(PING_PORT)
 	log.Fatal(http.ListenAndServe(
-		fmt.Sprintf(":%d", port),
+		Format(":%d", port),
 		router,
 	))
 }
