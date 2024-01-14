@@ -1,9 +1,15 @@
-<form
+<h3>ADD PING</h3>
+
+<label for="key">
+    <input
+        type="text"
+        name="key"
+        placeholder="ping key name"
+    />
+</label>
+<button
+    hx-include="[name='key']"
     hx-post="/api/v1/pings"
     hx-swap="innerHTML"
     hx-target="#view-ping-list"
->
-    <label for="key">Key:</label>
-    <input type="text" name="key" required/>
-    <button type="submit">CREATE PING</button>
-</form>
+>CREATE PING</button>

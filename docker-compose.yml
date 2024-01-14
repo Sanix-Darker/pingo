@@ -3,6 +3,8 @@ version: '3.9'
 services:
   mongodb:
     image: mongo
+    env_file:
+      - .env
     ports:
       - "27018:27017"
     volumes:
@@ -18,7 +20,6 @@ services:
       - "3241:3241"
     depends_on:
       - mongodb
-    working_dir: /src/app
     volumes:
       - ./app/:/src/app
       - ./static/:/src/static

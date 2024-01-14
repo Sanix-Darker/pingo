@@ -37,7 +37,7 @@ func addApiRoutes(router *mux.Router) *mux.Router {
 	router.HandleFunc(
 		Format("%s/pings", API_VERSION),
 		CreatePing,
-	).Methods("POST", "OPTIONS")
+	).Methods("POST")
 
 	return router
 }
@@ -46,28 +46,16 @@ func addApiRoutes(router *mux.Router) *mux.Router {
 func addViewRoutes(router *mux.Router) *mux.Router {
 	// pages
 	router.HandleFunc("/", IndexHandler).Methods("GET", "OPTIONS")
-	router.HandleFunc(
-		"/dashboard",
-		DashboardHandler,
-	).Methods("GET", "OPTIONS")
+	router.HandleFunc("/dashboard", DashboardHandler).Methods("GET", "OPTIONS")
 
 	// components
 	// forms
-	router.HandleFunc(
-		"/form-ping-create",
-		CreatePingHandler,
-	).Methods("GET")
+	router.HandleFunc("/form-ping-create", CreatePingHandler).Methods("GET")
 	// views
-	router.HandleFunc(
-		"/view-ping-list",
-		ViewPingListHandler,
-	).Methods("GET")
+	router.HandleFunc("/view-ping-list", ViewPingListHandler).Methods("GET")
 
 	// rendering svgs
-	router.HandleFunc(
-		"/o/{pingPath}",
-		StrikeHandler,
-	).Methods("GET", "OPTIONS")
+	router.HandleFunc("/o/{pingPath}", StrikeHandler).Methods("GET", "OPTIONS")
 
 	return router
 }

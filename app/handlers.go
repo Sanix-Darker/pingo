@@ -79,11 +79,12 @@ func CreatePing(w http.ResponseWriter, r *http.Request) {
 
 	// Extract form values
 	ping.ID = uuid.New().String()
-	ping.Key := r.Form.Get("key")
+	ping.Key = r.Form.Get("key")
 	ping.CreatedAt = time.Now().Format("%d-%M-%Y %h:%m:%s")
 	ping.UpdatedAt = ping.CreatedAt
 
-	log.Println("> Create Ping...", ping)
+	log.Println("> Create Ping...")
+
 	// Save the ping to MongoDB
 	collection := MongoClient().Database(MONGO_DB).Collection(PING_COLLECTION)
 	_, err = collection.InsertOne(nil, ping)
@@ -115,6 +116,12 @@ func ViewPingListHandler(w http.ResponseWriter, r *http.Request) {
 				ID: "an-id",
 			},
 			Key: "special-key",
+		},
+		Ping{
+			CommonFields: CommonFields{
+				ID: "the-id",
+			},
+			Key: "dok-key",
 		},
 	}
 

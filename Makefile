@@ -37,6 +37,9 @@ deps:
 dev: build
 	./app/$(BINARY_NAME)
 
+format:
+	gofmt -w .
+
 lint:
 	golangci-lint run
 

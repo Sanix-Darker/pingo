@@ -1,3 +1,5 @@
+<h3>PING LIST</h3>
+
 <table>
     <thead>
         <tr>
@@ -8,7 +10,7 @@
     <tbody>
         {{range .Pings}}
             <tr>
-                <td>#{{.CommonFields.ID }}</td>
+                <td>#{{ .CommonFields.ID }}</td>
                 <td>{{ .Key }}</td>
             </tr>
         {{end}}
